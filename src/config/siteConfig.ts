@@ -46,8 +46,8 @@ export const siteConfig: SiteConfig = {
 	subtitle: "Demo site",
 
 	// 站点 URL
-	// TODO: 目前暂无自定义域名，部署到 Cloudflare 后替换为实际的 xxx.workers.dev 或自定义域名
-	site_url: "https://firefly.workers.dev",
+	// TODO: 绑定自定义域名后替换为你的域名，例如 https://yourdomain.com
+	site_url: "https://firefly.664501775.workers.dev",
 
 	// 站点描述
 	description:
