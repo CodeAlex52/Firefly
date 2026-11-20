@@ -5,6 +5,7 @@ pinned: false
 description: Solo 去 5 个英文国家、纳瓦尔宝典、不要社交只学 5 个人、控制猪瘾、赚国外的钱来内地花——一年视频看下来，v 哥的核心思想整理。
 tags: [人物观察, 5人法则, Victorio]
 category: 5 人法则
+image: ./images/victorio.jpg
 slug: victorio
 ---
 
