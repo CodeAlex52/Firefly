@@ -53,6 +53,14 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "#",
 		icon: "material-symbols:person",
 		children: [
+			// 记录看板
+			{
+				name: "记录看板",
+				url: "https://board.664501775.workers.dev",
+				external: true,
+				icon: "material-symbols:checklist-rounded",
+			},
+
 			// 动态
 			LinkPresets.Dynamic,
 

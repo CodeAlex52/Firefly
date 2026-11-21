@@ -1,0 +1,69 @@
+---
+// 首页「正在做」区块：从 board 看板实时拉取进行中的项目
+---
+
+<div class="card-base mb-4">
+	<div class="px-4 py-5 md:px-6">
+		<div class="mb-4 flex items-baseline justify-between gap-3">
+			<h2 class="text-base font-bold text-90 flex items-center gap-2">
+				<span class="inline-block h-[15px] w-[3px] rounded-full" style="background: var(--primary)"></span>
+				正在做
+			</h2>
+			<span class="text-xs text-50">每天自己往前走</span>
+		</div>
+		<div id="ongoing-list" class="flex flex-col gap-5">
+			<p class="text-sm text-50">读取中…</p>
+		</div>
+	</div>
+</div>
+
+<script>
+	const API = "https://board.664501775.workers.dev/api/state";
+	const SITE = "https://board.664501775.workers.dev/";
+
+	const esc = (s) =>
+		String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+	const fmtDay = (s) => {
+		if (!s) return "—";
+		const [, m, d] = s.split("-");
+		return `${m}.${d}`;
+	};
+
+	function row(it) {
+		const pct = Math.min(100, it.ratio || 0) * 100;
+		const done = (it.ratio || 0) >= 1;
+		const value = it.kind === "auto" ? it.value : Math.round(it.value * 10) / 10;
+		return `<a href="${SITE}" target="_blank" rel="noopener" class="block group">
+			<div class="mb-2 flex items-baseline justify-between gap-3">
+				<span class="font-medium text-90 transition-colors group-hover:text-(--primary)">${esc(it.name)}</span>
+				<span class="shrink-0 text-sm text-75 tabular-nums">${value}<span class="text-50"> / ${it.target} ${esc(it.unit || "天")}</span></span>
+			</div>
+			<div class="h-[6px] overflow-hidden rounded-full" style="background: var(--line-divider)">
+				<div class="h-full rounded-full" style="width:${pct.toFixed(2)}%;background:var(--primary);transition:width .8s cubic-bezier(.2,.9,.2,1)"></div>
+			</div>
+			<div class="mt-2 flex items-baseline justify-between text-xs text-50 tabular-nums">
+				<span>${fmtDay(it.startedOn)} 起</span>
+				<span>${done ? "已满一轮" : "还剩 " + it.remain + " " + esc(it.unit || "天")}</span>
+			</div>
+		</a>`;
+	}
+
+	async function load() {
+		const box = document.getElementById("ongoing-list");
+		if (!box) return;
+		try {
+			const res = await fetch(`${API}?tz=${-new Date().getTimezoneOffset()}`);
+			if (!res.ok) throw new Error(res.status);
+			const data = await res.json();
+			const items = (data.items || []).filter((i) => i.kind === "auto");
+			box.innerHTML = items.length
+				? items.map(row).join("")
+				: '<p class="text-sm text-50">暂时没有正在做的事。</p>';
+		} catch {
+			box.innerHTML = '<p class="text-sm text-50">读不到数据，稍后再试。</p>';
+		}
+	}
+
+	if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", load);
+	else load();
+</script>

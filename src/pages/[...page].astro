@@ -4,6 +4,7 @@ import Pagination from "@/components/common/Pagination.astro";
 import PostPage from "@/components/layout/PostPage.astro";
 import { siteConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import Ongoing from "@/components/layout/Ongoing.astro";
 import { getSortedPosts } from "@/utils/content-utils";
 export const getStaticPaths = (async ({ paginate }) => {
 	const allBlogPosts = await getSortedPosts();
@@ -19,6 +20,7 @@ const len = page.data.length;
 ---
 
 <MainGridLayout>
+  {page.currentPage === 1 && <Ongoing />}
   <PostPage page={page} />
   {
     page.total > page.size && (

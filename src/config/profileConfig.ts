@@ -22,6 +22,12 @@ export const profileConfig: ProfileConfig = {
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
 		{
+			name: "记录",
+			icon: "material-symbols:checklist-rounded",
+			url: "https://board.664501775.workers.dev",
+			showName: false,
+		},
+		{
 			name: "GitHub",
 			icon: "fa7-brands:github",
 			url: "https://github.com/CodeAlex52",
